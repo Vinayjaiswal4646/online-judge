@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from app import models
+from app.config import settings
 from app.database import Base, get_db
 from app.main import app
 
@@ -37,3 +38,10 @@ def admin_headers(client, db_session):
         "/auth/login", data={"username": "admin", "password": "password123"}
     ).json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture(autouse=True)
+def local_sandbox_by_default(monkeypatch):
+    """Normal tests use the fast local runner so they don't need Docker.
+    The Docker tests in test_sandbox.py switch it back on themselves."""
+    monkeypatch.setattr(settings, "sandbox_backend", "local")

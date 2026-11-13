@@ -26,6 +26,7 @@ class Verdict(str, enum.Enum):
     runtime_error = "runtime_error"
     time_limit_exceeded = "time_limit_exceeded"
     memory_limit_exceeded = "memory_limit_exceeded"
+    internal_error = "internal_error"
 
 
 class User(Base):
